@@ -39,7 +39,6 @@ $ npm run android
 ```sh
 $ npm run ios
 ```
-1. Access the url `http://localhost:8000` and start playing!
 
 > Don't forget to update Appwrite endpoint and project ID
 
