@@ -14,28 +14,28 @@ This playground doesn't include any Appwrite best practices but rather intended 
 
 `NOTE: Commands are to be executed on Linux, Mac, and Windows(using Powershell)`
 
-1. Fork this repository by clicking on the <a href="https://github.com/appwrite/playground-for-react-native/new/main?readme=1#fork-destination-box"><kbd><b>Fork</b></kbd></a> button.
+1. Fork this repository by clicking on the <a href="https://github.com/appwrite/playground-for-web/fork"><kbd><b>Fork</b></kbd></a> button.
 2. Clone the repo by running the command
 ```sh
 $ git clone https://github.com/Your_Username/playground-for-react-native.git
 ```
-3. Go inside the folder by command
+1. Go inside the folder by command
 ```sh
 $ cd playground-for-react-native
 ```
-4. Run the command to install node modules
+1. Run the command to install node modules
 ```sh
 $ npm install
 ```
-5. If on ios run pod install
+1. If on ios run pod install
 ```sh
 $ cd ios && pod install && cd ..
 ```
-6. Run application on android
+1. Run application on android
 ```sh
 $ npm run android
 ```
-7. Or run application on ios
+1. Or run application on ios
 ```sh
 $ npm run ios
 ```
