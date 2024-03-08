@@ -11,7 +11,11 @@
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.73.5"
+    "react-native": "0.73.5",
+    "react-native-appwrite": "^0.1.0",
+    "react-native-document-picker": "^9.1.1",
+    "react-native-fs": "^2.20.0",
+    "react-native-url-polyfill": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
