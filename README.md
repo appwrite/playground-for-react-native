@@ -14,7 +14,7 @@ This playground doesn't include any Appwrite best practices but rather intended 
 
 `NOTE: Commands are to be executed on Linux, Mac, and Windows(using Powershell)`
 
-1. Fork this repository by clicking on the <a href="https://github.com/appwrite/playground-for-web/fork"><kbd><b>Fork</b></kbd></a> button.
+1. Fork this repository by clicking on the <a href="https://github.com/appwrite/playground-for-react-native/fork"><kbd><b>Fork</b></kbd></a> button.
 2. Clone the repo by running the command
 ```sh
 $ git clone https://github.com/Your_Username/playground-for-react-native.git
