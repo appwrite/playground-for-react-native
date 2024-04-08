@@ -4,8 +4,6 @@ Appwrite playground is a simple way to explore the Appwrite API & Appwrite React
 
 This is Appwrite React Native integration. For React integration please look at our [Web Playground](https://github.com/appwrite/playground-for-web) and [Web SDK](https://github.com/appwrite/sdk-for-web)
 
-![Appwrite Playground](preview.png)
-
 ## Get Started
 
 The `App.js` file in this repository contains **all** the playground examples and source code.
