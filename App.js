@@ -1,4 +1,20 @@
+import * as DocumentPicker from 'expo-document-picker';
+
+import React, { useEffect, useState } from 'react';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useColorScheme
+} from 'react-native';
+import { Account, Client, Databases, ID, Permission, Role, Storage } from 'react-native-appwrite';
+
 import { StatusBar } from 'expo-status-bar';
+
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -6,22 +22,6 @@ import { StatusBar } from 'expo-status-bar';
  * @format
  */
 
-import { Account, Client, Permission, Role, Storage, Models, Databases, ID, RealtimeResponseEvent } from 'react-native-appwrite';
-import React, { useState } from 'react';
-import {
-  Button,
-  Image,
-  ImageComponent,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
-import * as DocumentPicker from 'expo-document-picker';
 
 let client;
 let account;
@@ -42,14 +42,14 @@ function App() {
     account = new Account(client);
     storage = new Storage(client);
     databases = new Databases(client);
-
+    // For session persistance we can get the current account data here
+    await getAccount();
   }
 
 
   let createSession = async () => {
     try {
-
-      await account.createEmailSession('user@appwrite.io', 'password');
+      await account.createEmailPasswordSession('user@appwrite.io', 'password');
       getAccount();
     } catch (e) {
       console.log(e);
@@ -92,14 +92,13 @@ function App() {
       copyToCacheDirectory: true,
       multiple: false
     });
-    await setupAppwrite();
     let storage = new Storage(client);
     if (!fl.assets) return;
     try {
       var pickedFile = fl.assets[0];
       pickedFile = { name: pickedFile.name, type: pickedFile.mimeType, uri: pickedFile.uri, size: pickedFile.size };
       console.log(pickedFile);
-      let uploaded = await storage.createFile('test', 'unique()', pickedFile, [
+      let uploaded = await storage.createFile('test', ID.unique(), pickedFile, [
         Permission.read(Role.users()),
       ], (progress) => {
         console.log(progress.chunksUploaded);
@@ -108,10 +107,6 @@ function App() {
     } catch (e) {
       console.log(e);
     }
-  }
-
-  if (!client) {
-    setupAppwrite();
   }
 
   const backgroundStyle = {
@@ -138,6 +133,13 @@ function App() {
     marginBottom: 20,
   }
 
+  // Set up appwrite only once upon mounting the application
+  useEffect(() => {
+    if(!client){
+      setupAppwrite();
+    }
+  },[]);
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -158,12 +160,12 @@ function App() {
           <TouchableOpacity onPress={subscribe} style={buttonStyle}>
             <Text style={buttonTextStyle}>Subscribe</Text>
           </TouchableOpacity>
-          {event && <Text>{JSON.stringify(event.payload)}</Text>}
+          {event && <Text>{JSON.stringify(event.payload , null, 2)}</Text>}
           {file && file.$id && <Image style={{ height: 500, objectFit: 'contain' }} source={{ uri: storage.getFilePreview('test', file.$id, 400, 500).href }} />}
-          <TouchableOpacity onPress={createDoc} style={buttonStyle}>
+          <TouchableOpacity onPress={createDoc} style={buttonStyle} disabled={!user}>
             <Text style={buttonTextStyle}>Create Doc</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={pickFile} style={buttonStyle}>
+          <TouchableOpacity onPress={pickFile} style={buttonStyle} disabled={!user}>
             <Text style={buttonTextStyle}>Upload</Text>
           </TouchableOpacity>
           {user && <Text>{user.name.length ? user.name : 'Anonymous user'}</Text>}
