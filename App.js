@@ -1,5 +1,6 @@
 import * as DocumentPicker from 'expo-document-picker';
-
+import { makeRedirectUri } from 'expo-auth-session'
+import * as WebBrowser from 'expo-web-browser';
 import React, { useEffect, useState } from 'react';
 import {
   Image,
@@ -11,8 +12,7 @@ import {
   View,
   useColorScheme
 } from 'react-native';
-import { Account, Client, Databases, ID, Permission, Role, Storage } from 'react-native-appwrite';
-
+import { Account, Client, Databases, ID, Permission, Role, Storage, OAuthProvider } from 'react-native-appwrite';
 import { StatusBar } from 'expo-status-bar';
 
 /**
@@ -59,6 +59,41 @@ function App() {
   let createAnonymousSession = async () => {
     await account.createAnonymousSession();
     getAccount();
+  }
+  let createOAuth2Session = async (provider) => {
+    try {
+      // REQUIRED
+      // Make sure a scheme is set in your app.json
+
+      // Create deep link that works across Expo environments
+      // Ensure localhost is used for the hostname to validation error for success/failure URLs
+      const deepLink = new URL(makeRedirectUri({preferLocalhost: true}));
+      if (!deepLink.hostname) {
+          deepLink.hostname = 'localhost';
+      }
+      const scheme = `${deepLink.protocol}//`; // e.g. 'exp://' or 'playground://'
+
+      // Start OAuth flow
+      const loginUrl = await account.createOAuth2Token(
+          provider,
+          `${deepLink}`,
+          `${deepLink}`,
+      );
+
+      // Open loginUrl and listen for the scheme redirect
+      const result = await WebBrowser.openAuthSessionAsync(`${loginUrl}`, scheme);
+
+      // Extract credentials from OAuth redirect URL
+      const url = new URL(result.url);
+      const secret = url.searchParams.get('secret');
+      const userId = url.searchParams.get('userId');
+
+      // Create session with OAuth credentials
+      await account.createSession(userId, secret);
+      await getAccount(); // get user, set state, and redirect as needed
+    } catch (e) {
+      console.log(e);
+    }
   }
   let createDoc = async () => {
     await databases.createDocument('65e7e1452ea7c6473b01', 'usernames', ID.unique(), {
@@ -156,6 +191,9 @@ function App() {
           </TouchableOpacity>
           <TouchableOpacity onPress={createSession} style={buttonStyle}>
             <Text style={buttonTextStyle}>Login with email</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => createOAuth2Session(OAuthProvider.Google)} style={buttonStyle}>
+            <Text style={buttonTextStyle}>Login with Google</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={subscribe} style={buttonStyle}>
             <Text style={buttonTextStyle}>Subscribe</Text>

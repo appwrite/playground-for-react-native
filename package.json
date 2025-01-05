@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
+    "prebuild": "expo prebuild --clean",
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -10,8 +11,10 @@
   },
   "dependencies": {
     "expo": "~52.0.23",
+    "expo-auth-session": "~6.0.1",
     "expo-document-picker": "~13.0.1",
     "expo-status-bar": "~2.0.0",
+    "expo-web-browser": "~14.0.1",
     "react": "18.3.1",
     "react-native": "0.76.5",
     "react-native-appwrite": "^0.6.0",
