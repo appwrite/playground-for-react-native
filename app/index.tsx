@@ -3,7 +3,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as WebBrowser from 'expo-web-browser';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Image, StyleSheet } from 'react-native';
-import { Account, Channel, Client, ID, Models, OAuthProvider, Permission, RealtimeResponseEvent, Role, Storage, TablesDB } from 'react-native-appwrite';
+import { Account, AppwriteException, Channel, Client, ID, Models, OAuthProvider, Permission, RealtimeResponseEvent, Role, Storage, TablesDB } from 'react-native-appwrite';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
@@ -116,11 +116,14 @@ export default function HomeScreen() {
   let logout = async () => {
     try {
       await account.deleteSession({ sessionId: 'current' });
-    } catch (e) {
-      // The session may already be gone, for example after it expired
-      console.log(e);
-    } finally {
       setUser(undefined);
+    } catch (e) {
+      console.log(e);
+      // 401 means the session is already gone, for example after it expired.
+      // On other errors the session is still active, so keep the user signed in.
+      if (e instanceof AppwriteException && e.code === 401) {
+        setUser(undefined);
+      }
     }
   }
 
