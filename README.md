@@ -6,7 +6,7 @@ This is Appwrite React Native integration. For React integration please look at 
 
 ## Get Started
 
-The `app/(tabs)/index.tsx` file in this repository contains **all** the playground examples and source code.
+The `app/index.tsx` file in this repository contains **all** the playground examples and source code.
 
 You can learn how to to integrate your Appwrite React Native SDK in your project and see how different features of the SDK can be used.
 
@@ -27,13 +27,13 @@ This playground doesn't include any Appwrite best practices but rather intended 
    npm install
    ```
 1. Add `io.appwrite.playground-for-react-native` as a React Native platform to your project
-1. Create `.env.local` using `.env` as a template
+1. Create `.env.local` using `.env` as a template. The table needs a `username` column that the test user can create rows in
 1. Update the `scheme` in the `app.json`
 1. Start the app
    ```sh
    npm start
    ```
-1. Access the app using Expo Go app
+1. Access the app using the Expo Go app (SDK 57)
 
 ## Contributing
 

@@ -5,21 +5,17 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/components/ThemedView';
-import { useBottomTabOverflow } from '@/components/ui/TabBarBackground';
 
 export default function ParallaxScrollView({
   children,
 }: PropsWithChildren) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const bottom = useBottomTabOverflow();
 
   return (
     <ThemedView style={styles.container}>
       <Animated.ScrollView
         ref={scrollRef}
-        scrollEventThrottle={16}
-        scrollIndicatorInsets={{ bottom }}
-        contentContainerStyle={{ paddingBottom: bottom }}>
+        scrollEventThrottle={16}>
         <ThemedView style={styles.content}>{children}</ThemedView>
       </Animated.ScrollView>
     </ThemedView>

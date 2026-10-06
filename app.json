@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "appwrite-callback-<PROJECT_ID>",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "io.appwrite.io.playground-for-react-native"
@@ -17,8 +16,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true
+      }
     },
     "web": {
       "bundler": "metro",
