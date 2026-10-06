@@ -39,8 +39,12 @@ export default function HomeScreen() {
   }
 
   let createAnonymousSession = async () => {
-    await account.createAnonymousSession();
-    getAccount();
+    try {
+      await account.createAnonymousSession();
+      await getAccount();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   let createOAuth2Session = async (provider: OAuthProvider) => {
@@ -110,8 +114,14 @@ export default function HomeScreen() {
   }
 
   let logout = async () => {
-    await account.deleteSession({ sessionId: 'current' });
-    setUser(undefined);
+    try {
+      await account.deleteSession({ sessionId: 'current' });
+    } catch (e) {
+      // The session may already be gone, for example after it expired
+      console.log(e);
+    } finally {
+      setUser(undefined);
+    }
   }
 
   let getAccount = async () => {
